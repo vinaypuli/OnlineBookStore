@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+ <title>Pragprog Books Online Store</title>
+ <%= stylesheet_link_tag "scaffold" %>
+ <%= stylesheet_link_tag "depot", :media => "all" %>
+ <%= javascript_include_tag :defaults %>
+ <%= csrf_meta_tag %>
+ </head>
+<body id="store" >
+<%= form_tag(products_path, :method => "get", class: "navbar-form", id: "search-form") do %>
+    <div class="input-append">
+      <%= text_field_tag :search, params[:search], class: "span2", placeholder: "Search Products" %>
+      <!-- In order to have the "search" icon int the button, we need to use plain HTML instead 
+           of using a Rails form helper -->
+      <button class="btn" type="submit" name="Search"><i class="icon-search"></i>Search</button>
+    </div>
+  <% end %>
+ <div id="banner" >
+ <%= image_tag("logo.png") %>
+ <%= @page_title || "Pragmatic Bookshelf" %>
+ </div>
+ <div id="columns" >
+ <div id="side" >
+
+    <% if @cart %>
+	<%= hidden_div_if(@cart.line_items.empty?, :id => "cart" ) do %>
+	<%= render @cart %>
+	<% end %>
+     <% end %>
+
+ <a href="/" >Home</a><br />
+ <a href="https://www.google.com/" >Questions</a><br />
+ <a href="https://news.google.com/" >News</a><br />
+ <a href="http://www..../contact" >Contact</a><br />
+ <a href="/login">Login</a>
+
+<% if session[:user_id] %>
+<br />
+<%= link_to 'Orders' , orders_path %><br />
+<%= link_to 'Products' , products_path %><br />
+<%= link_to 'Users' , users_path %><br />
+<br />
+<%= button_to 'Logout' , logout_path, :method => :delete %>
+<% end %>
+
+ </div>
+ <div id="main" >
+ <%= yield %>
+ </div>
+ </div>
+ </body>
+ </html>
